@@ -1,0 +1,41 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "TankPawn.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
+
+ATankPawn::ATankPawn()
+{
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	SpringArm->SetupAttachment(RootComponent);
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
+
+	MoveSpeed = 100.0f;
+	RotationSpeed = 90.0f;
+}
+
+// Called to bind functionality to input
+void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &ATankPawn::MoveForward);
+	PlayerInputComponent->BindAxis("Turn", this, &ATankPawn::TurnAround);
+}
+
+void ATankPawn::MoveForward(float Value)
+{
+	AddActorWorldOffset(GetActorForwardVector() * Value * MoveSpeed * UGameplayStatics::GetWorldDeltaSeconds(this), true);
+}
+
+void ATankPawn::TurnAround(float Value)
+{
+	FRotator Rotation;
+	Rotation.Yaw = Value * RotationSpeed * UGameplayStatics::GetWorldDeltaSeconds(this);
+	AddActorLocalRotation(Rotation, true);
+}
+
