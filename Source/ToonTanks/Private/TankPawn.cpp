@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+
+
 ATankPawn::ATankPawn()
 {
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
@@ -18,6 +20,25 @@ ATankPawn::ATankPawn()
 	RotationSpeed = 90.0f;
 }
 
+// Called when the game starts or when spawned
+void ATankPawn::BeginPlay()
+{
+	Super::BeginPlay();
+
+	PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->bShowMouseCursor = true;
+}
+
+// Called every frame
+void ATankPawn::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	FHitResult Hit;
+	PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+	SetTurretRotation(Hit.ImpactPoint, DeltaTime);
+}
+
 // Called to bind functionality to input
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -25,6 +46,8 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ATankPawn::MoveForward);
 	PlayerInputComponent->BindAxis("Turn", this, &ATankPawn::TurnAround);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ATankPawn::Fire);
 }
 
 void ATankPawn::MoveForward(float Value)
@@ -38,4 +61,3 @@ void ATankPawn::TurnAround(float Value)
 	Rotation.Yaw = Value * RotationSpeed * UGameplayStatics::GetWorldDeltaSeconds(this);
 	AddActorLocalRotation(Rotation, true);
 }
-

@@ -16,12 +16,9 @@ public:
 	ABasePawn();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	void SetTurretRotation(FVector TargetLocation, float DeltaTime);
+	void Fire();
 
 private:
 
@@ -36,4 +33,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USceneComponent* ProjectileSpawnPoint;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float TurretRotationSpeed = 3.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TSubclassOf<class AProjectileActor> Projectile;
 };
