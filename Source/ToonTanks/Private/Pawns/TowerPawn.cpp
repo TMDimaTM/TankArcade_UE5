@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TowerPawn.h"
+#include "Pawns/TowerPawn.h"
 
 ATowerPawn::ATowerPawn()
 {

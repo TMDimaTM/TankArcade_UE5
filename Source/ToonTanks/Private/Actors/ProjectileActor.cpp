@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ProjectileActor.h"
+#include "Actors/ProjectileActor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
@@ -11,6 +11,7 @@ AProjectileActor::AProjectileActor()
 	PrimaryActorTick.bCanEverTick = false;
 
 	MoveSpeed = 1000.0f;
+	Damage = 25.0f;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
@@ -26,6 +27,7 @@ void AProjectileActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Mesh->OnComponentHit.AddDynamic(this, &AProjectileActor::OnHit);
 }
 
 // Called every frame
@@ -33,4 +35,15 @@ void AProjectileActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AProjectileActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor != nullptr && OtherActor != GetOwner() && OtherActor != this)
+	{
+		FDamageEvent DamageEvent;
+		OtherActor->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
+	}
+
+	Destroy();
 }

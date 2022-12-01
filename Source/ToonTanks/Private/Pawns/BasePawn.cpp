@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BasePawn.h"
+#include "Pawns/BasePawn.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "ProjectileActor.h"
+#include "Actors/ProjectileActor.h"
+#include "Components/HealthComponent.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -23,6 +24,15 @@ ABasePawn::ABasePawn()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+}
+
+// Called when the game starts or when spawned
+void ABasePawn::BeginPlay()
+{
+	Super::BeginPlay();
+
 }
 
 void ABasePawn::SetTurretRotation(FVector TargetLocation, float DeltaTime)
@@ -36,5 +46,6 @@ void ABasePawn::SetTurretRotation(FVector TargetLocation, float DeltaTime)
 
 void ABasePawn::Fire()
 {
-	GetWorld()->SpawnActor<AProjectileActor>(Projectile, ProjectileSpawnPoint->GetComponentTransform());
+	AProjectileActor* SpawnedProjectile = GetWorld()->SpawnActor<AProjectileActor>(Projectile, ProjectileSpawnPoint->GetComponentTransform());
+	SpawnedProjectile->SetOwner(this);
 }
