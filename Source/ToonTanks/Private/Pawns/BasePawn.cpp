@@ -49,3 +49,10 @@ void ABasePawn::Fire()
 	AProjectileActor* SpawnedProjectile = GetWorld()->SpawnActor<AProjectileActor>(Projectile, ProjectileSpawnPoint->GetComponentTransform());
 	SpawnedProjectile->SetOwner(this);
 }
+
+void ABasePawn::ParentHandleDestruction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Parent destruction"));
+	// VFX
+	// SFX
+}

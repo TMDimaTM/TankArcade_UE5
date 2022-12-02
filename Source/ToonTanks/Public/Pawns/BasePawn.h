@@ -21,6 +21,7 @@ protected:
 
 	void SetTurretRotation(FVector TargetLocation, float DeltaTime);
 	void Fire();
+	void ParentHandleDestruction();
 
 private:
 

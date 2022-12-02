@@ -61,3 +61,13 @@ void ATankPawn::TurnAround(float Value)
 	Rotation.Yaw = Value * RotationSpeed * UGameplayStatics::GetWorldDeltaSeconds(this);
 	AddActorLocalRotation(Rotation, true);
 }
+
+void ATankPawn::HandleDestruction_Implementation()
+{
+	ParentHandleDestruction();
+
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+	DisableInput(GetWorld()->GetFirstPlayerController());
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+}

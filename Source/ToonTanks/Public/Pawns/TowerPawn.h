@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "BasePawn.h"
+#include "Interfaces/HandleDestructionInterface.h"
 #include "TowerPawn.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOONTANKS_API ATowerPawn : public ABasePawn
+class TOONTANKS_API ATowerPawn : public ABasePawn, public IHandleDestructionInterface
 {
 	GENERATED_BODY()
 	
@@ -24,6 +25,12 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void HandleDestruction();
+	virtual void HandleDestruction_Implementation();
 
 private:
 

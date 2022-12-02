@@ -2,7 +2,7 @@
 
 
 #include "Components/HealthComponent.h"
-#include "Pawns/TankPawn.h"
+#include "Interfaces/HandleDestructionInterface.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -35,17 +35,15 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	CurrentHealth -= Damage;
-
-	if (CurrentHealth <= 0.0f)
+	if (CurrentHealth > 0)
 	{
-		if (ATankPawn* PlayerPawn = Cast<ATankPawn>(DamagedActor))
+		CurrentHealth -= Damage;
+		if (CurrentHealth <= 0)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Lose"));
-		}
-		else
-		{
-			GetOwner()->Destroy();
+			if (IHandleDestructionInterface* Interface = Cast<IHandleDestructionInterface>(DamagedActor))
+			{
+				Interface->Execute_HandleDestruction(DamagedActor);
+			}
 		}
 	}
 }

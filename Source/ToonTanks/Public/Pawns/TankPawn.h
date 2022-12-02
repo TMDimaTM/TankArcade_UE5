@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "BasePawn.h"
+#include "Interfaces/HandleDestructionInterface.h"
 #include "TankPawn.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOONTANKS_API ATankPawn : public ABasePawn
+class TOONTANKS_API ATankPawn : public ABasePawn, public IHandleDestructionInterface
 {
 	GENERATED_BODY()
 	
@@ -27,6 +28,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void HandleDestruction();
+	virtual void HandleDestruction_Implementation();
 
 private:
 

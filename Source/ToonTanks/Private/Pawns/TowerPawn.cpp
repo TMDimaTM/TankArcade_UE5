@@ -46,3 +46,8 @@ void ATowerPawn::CheckFireCondition()
 		Fire();
 	}
 }
+
+void ATowerPawn::HandleDestruction_Implementation()
+{
+	Destroy();
+}
