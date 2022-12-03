@@ -2,6 +2,8 @@
 
 
 #include "Pawns/TowerPawn.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameModes/ToonTanksGameMode.h"
 
 ATowerPawn::ATowerPawn()
 {
@@ -49,5 +51,7 @@ void ATowerPawn::CheckFireCondition()
 
 void ATowerPawn::HandleDestruction_Implementation()
 {
+	ParentHandleDestruction();
+
 	Destroy();
 }

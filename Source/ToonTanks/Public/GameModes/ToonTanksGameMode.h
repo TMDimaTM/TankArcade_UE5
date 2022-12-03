@@ -23,6 +23,11 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	void CheckGameCondition(AActor* DeadActor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void GameOver(bool bWin);
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Start")
 	float StartTime;

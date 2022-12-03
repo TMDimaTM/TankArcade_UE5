@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerControllers/ToonTanksPlayerController.h"
+#include "GameModes/ToonTanksGameMode.h"
 
 
 

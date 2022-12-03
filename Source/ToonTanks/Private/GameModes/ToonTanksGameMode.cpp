@@ -5,6 +5,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "PlayerControllers/ToonTanksPlayerController.h"
 #include "TimerManager.h"
+#include "Pawns/TankPawn.h"
+#include "Pawns/TowerPawn.h"
+
+
 
 AToonTanksGameMode::AToonTanksGameMode()
 {
@@ -36,4 +40,22 @@ void AToonTanksGameMode::HandleGameStart()
 {
 	PlayerController->SetPlayerInputEnabled(true);
 	bGameStarted = true;
+}
+
+void AToonTanksGameMode::CheckGameCondition(AActor* DeadActor)
+{
+	if (Cast<ATankPawn>(DeadActor))
+	{
+		GameOver(false);
+	}
+	else
+	{
+		TArray<AActor*> TowerActors;
+		UGameplayStatics::GetAllActorsOfClass(this, ATowerPawn::StaticClass(), TowerActors);
+
+		if (TowerActors.Num() <= 0)
+		{
+			GameOver(true);
+		}
+	}
 }

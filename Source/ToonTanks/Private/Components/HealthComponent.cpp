@@ -2,7 +2,9 @@
 
 
 #include "Components/HealthComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Interfaces/HandleDestructionInterface.h"
+#include "GameModes/ToonTanksGameMode.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -43,6 +45,9 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 			if (IHandleDestructionInterface* Interface = Cast<IHandleDestructionInterface>(DamagedActor))
 			{
 				Interface->Execute_HandleDestruction(DamagedActor);
+
+				AToonTanksGameMode* GameMode = Cast<AToonTanksGameMode>(UGameplayStatics::GetGameMode(this));
+				GameMode->CheckGameCondition(DamagedActor);
 			}
 		}
 	}
