@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "PlayerControllers/ToonTanksPlayerController.h"
 
 
 
@@ -25,8 +26,7 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerController = GetWorld()->GetFirstPlayerController();
-	PlayerController->bShowMouseCursor = true;
+	PlayerController = Cast<AToonTanksPlayerController>(GetWorld()->GetFirstPlayerController());
 }
 
 // Called every frame
@@ -66,8 +66,6 @@ void ATankPawn::HandleDestruction_Implementation()
 {
 	ParentHandleDestruction();
 
+	PlayerController->SetPlayerInputEnabled(false);
 	SetActorHiddenInGame(true);
-	SetActorTickEnabled(false);
-	DisableInput(GetWorld()->GetFirstPlayerController());
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 }

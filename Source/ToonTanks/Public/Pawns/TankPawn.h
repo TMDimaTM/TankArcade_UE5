@@ -49,7 +49,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float RotationSpeed;
 
-	APlayerController* PlayerController;
+	class AToonTanksPlayerController* PlayerController;
 
 	void MoveForward(float Value);
 	void TurnAround(float Value);

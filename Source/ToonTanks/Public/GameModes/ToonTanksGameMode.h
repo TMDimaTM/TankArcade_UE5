@@ -14,4 +14,28 @@ class TOONTANKS_API AToonTanksGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AToonTanksGameMode();
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	virtual void Tick(float DeltaTime) override;
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Start")
+	float StartTime;
+
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Start")
+	float RemainingTime;
+
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Start")
+	bool bGameStarted;
+
+	class AToonTanksPlayerController* PlayerController;
+
+	FTimerHandle StartTimerHandle;
+
+	void HandleGameStart();
 };
