@@ -31,11 +31,26 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UProjectileMovementComponent* ProjectileMovementComp;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UParticleSystemComponent* TrailEffect;
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float MoveSpeed;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float Damage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	UParticleSystem* HitEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UCameraShakeBase> CameraShake;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* LaunchSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* HitSound;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

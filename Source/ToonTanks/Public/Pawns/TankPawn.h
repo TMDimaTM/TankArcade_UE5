@@ -35,6 +35,8 @@ public:
 	void HandleDestruction();
 	virtual void HandleDestruction_Implementation();
 
+	bool bIsDead;
+
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")

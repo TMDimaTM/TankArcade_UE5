@@ -69,4 +69,6 @@ void ATankPawn::HandleDestruction_Implementation()
 
 	PlayerController->SetPlayerInputEnabled(false);
 	SetActorHiddenInGame(true);
+
+	bIsDead = true;
 }

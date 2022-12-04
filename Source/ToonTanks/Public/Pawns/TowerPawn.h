@@ -40,7 +40,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Fire")
 	float FireRate;
 
-	APawn* PlayerPawn;
+	class ATankPawn* PlayerPawn;
 
 	float GetDistanceToPlayer();
 	bool CanSeePlayer();

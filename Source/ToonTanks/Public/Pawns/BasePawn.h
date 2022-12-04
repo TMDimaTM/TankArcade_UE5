@@ -45,4 +45,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectileActor> Projectile;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	UParticleSystem* DeathEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* DeathSound;
 };

@@ -4,6 +4,7 @@
 #include "Pawns/TowerPawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameModes/ToonTanksGameMode.h"
+#include "Pawns/TankPawn.h"
 
 ATowerPawn::ATowerPawn()
 {
@@ -15,7 +16,7 @@ void ATowerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	PlayerPawn = Cast<ATankPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
 	FTimerHandle FireRateTimerHandle;
 	GetWorldTimerManager().SetTimer(FireRateTimerHandle, this, &ATowerPawn::CheckFireCondition, FireRate, true);
@@ -43,7 +44,7 @@ bool ATowerPawn::CanSeePlayer()
 
 void ATowerPawn::CheckFireCondition()
 {
-	if (CanSeePlayer())
+	if (CanSeePlayer() && !PlayerPawn->bIsDead)
 	{
 		Fire();
 	}

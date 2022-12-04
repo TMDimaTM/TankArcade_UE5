@@ -6,6 +6,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Actors/ProjectileActor.h"
 #include "Components/HealthComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -52,7 +53,6 @@ void ABasePawn::Fire()
 
 void ABasePawn::ParentHandleDestruction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Parent destruction"));
-	// VFX
-	// SFX
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorTransform());
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
 }
