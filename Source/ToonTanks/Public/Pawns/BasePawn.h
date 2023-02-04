@@ -16,12 +16,12 @@ public:
 	ABasePawn();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
-	void SetTurretRotation(FVector TargetLocation, float DeltaTime);
+	void SetTurretRotation(const FVector& TargetLocation, float DeltaTime);
+
 	void Fire();
-	void ParentHandleDestruction();
+
+	void ParentHandleDestruction() const;
 
 private:
 

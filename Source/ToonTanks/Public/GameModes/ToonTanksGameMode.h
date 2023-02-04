@@ -23,10 +23,10 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	void CheckGameCondition(AActor* DeadActor);
+	void CheckGameCondition(AActor* DeadActor) const;
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void GameOver(bool bWin);
+	void GameOver(bool bWin) const;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Start")
@@ -38,6 +38,7 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Start")
 	bool bGameStarted;
 
+	UPROPERTY()
 	class AToonTanksPlayerController* PlayerController;
 
 	FTimerHandle StartTimerHandle;

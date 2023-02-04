@@ -23,7 +23,10 @@ void AToonTanksGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerController = Cast<AToonTanksPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-	PlayerController->SetPlayerInputEnabled(false);
+	if (PlayerController != nullptr)
+	{
+		PlayerController->SetPlayerInputEnabled(false);
+	}
 
 	GetWorldTimerManager().SetTimer(StartTimerHandle, this, &AToonTanksGameMode::HandleGameStart, StartTime, false);
 }
@@ -42,7 +45,7 @@ void AToonTanksGameMode::HandleGameStart()
 	bGameStarted = true;
 }
 
-void AToonTanksGameMode::CheckGameCondition(AActor* DeadActor)
+void AToonTanksGameMode::CheckGameCondition(AActor* DeadActor) const
 {
 	if (Cast<ATankPawn>(DeadActor))
 	{

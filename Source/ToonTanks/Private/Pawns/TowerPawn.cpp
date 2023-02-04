@@ -26,18 +26,18 @@ void ATowerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CanSeePlayer())
+	if (PlayerPawn != nullptr && CanSeePlayer())
 	{
 		SetTurretRotation(PlayerPawn->GetActorLocation(), DeltaTime);
 	}
 }
 
-float ATowerPawn::GetDistanceToPlayer()
+float ATowerPawn::GetDistanceToPlayer() const
 {
 	return FVector::Distance(GetActorLocation(), PlayerPawn->GetActorLocation());
 }
 
-bool ATowerPawn::CanSeePlayer()
+bool ATowerPawn::CanSeePlayer() const
 {
 	return GetDistanceToPlayer() <= MaxViewDistance;
 }

@@ -35,9 +35,12 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FHitResult Hit;
-	PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, Hit);
-	SetTurretRotation(Hit.ImpactPoint, DeltaTime);
+	if (PlayerController != nullptr)
+	{
+		FHitResult Hit;
+		PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+		SetTurretRotation(Hit.ImpactPoint, DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -67,7 +70,10 @@ void ATankPawn::HandleDestruction_Implementation()
 {
 	ParentHandleDestruction();
 
-	PlayerController->SetPlayerInputEnabled(false);
+	if (PlayerController != nullptr)
+	{
+		PlayerController->SetPlayerInputEnabled(false);
+	}
 	SetActorHiddenInGame(true);
 
 	bIsDead = true;

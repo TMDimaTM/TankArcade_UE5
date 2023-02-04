@@ -29,14 +29,7 @@ ABasePawn::ABasePawn()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
-// Called when the game starts or when spawned
-void ABasePawn::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
-void ABasePawn::SetTurretRotation(FVector TargetLocation, float DeltaTime)
+void ABasePawn::SetTurretRotation(const FVector& TargetLocation, float DeltaTime)
 {
 	FRotator CurrentRotation = TurretMesh->GetComponentRotation();
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(TurretMesh->GetComponentLocation(), TargetLocation);
@@ -47,12 +40,21 @@ void ABasePawn::SetTurretRotation(FVector TargetLocation, float DeltaTime)
 
 void ABasePawn::Fire()
 {
-	AProjectileActor* SpawnedProjectile = GetWorld()->SpawnActor<AProjectileActor>(Projectile, ProjectileSpawnPoint->GetComponentTransform());
-	SpawnedProjectile->SetOwner(this);
+	if (Projectile)
+	{
+		AProjectileActor* SpawnedProjectile = GetWorld()->SpawnActor<AProjectileActor>(Projectile, ProjectileSpawnPoint->GetComponentTransform());
+		SpawnedProjectile->SetOwner(this);
+	}
 }
 
-void ABasePawn::ParentHandleDestruction()
+void ABasePawn::ParentHandleDestruction() const
 {
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorTransform());
-	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	if (DeathEffect != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorTransform());
+	}
+	if (DeathSound != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	}
 }

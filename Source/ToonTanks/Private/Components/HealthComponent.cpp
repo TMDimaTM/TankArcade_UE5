@@ -23,31 +23,28 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentHealth = MaxHealth;
-	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
-}
-
-
-// Called every frame
-void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &ThisClass::TakeDamage);
 }
 
 void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (CurrentHealth > 0)
+	if (DamagedActor != nullptr)
 	{
-		CurrentHealth -= Damage;
-		if (CurrentHealth <= 0)
+		if (CurrentHealth > 0)
 		{
-			if (IHandleDestructionInterface* Interface = Cast<IHandleDestructionInterface>(DamagedActor))
+			CurrentHealth -= Damage;
+			if (CurrentHealth <= 0)
 			{
-				Interface->Execute_HandleDestruction(DamagedActor);
+				if (IHandleDestructionInterface* Interface = Cast<IHandleDestructionInterface>(DamagedActor))
+				{
+					Interface->Execute_HandleDestruction(DamagedActor);
 
-				AToonTanksGameMode* GameMode = Cast<AToonTanksGameMode>(UGameplayStatics::GetGameMode(this));
-				GameMode->CheckGameCondition(DamagedActor);
+					AToonTanksGameMode* GameMode = Cast<AToonTanksGameMode>(UGameplayStatics::GetGameMode(this));
+					if (GameMode != nullptr)
+					{
+						GameMode->CheckGameCondition(DamagedActor);
+					}
+				}
 			}
 		}
 	}

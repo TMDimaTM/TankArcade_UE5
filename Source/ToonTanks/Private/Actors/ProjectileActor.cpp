@@ -32,16 +32,12 @@ void AProjectileActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Mesh->OnComponentHit.AddDynamic(this, &AProjectileActor::OnHit);
+	Mesh->OnComponentHit.AddDynamic(this, &ThisClass::OnHit);
 
-	UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
-}
-
-// Called every frame
-void AProjectileActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	if (LaunchSound != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
+	}
 }
 
 void AProjectileActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -52,9 +48,18 @@ void AProjectileActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherAct
 		OtherActor->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
 	}
 
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, GetActorTransform());
-	UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
-	UGameplayStatics::PlayWorldCameraShake(this, CameraShake, GetActorLocation(), 0.0f, 5000.0f);
+	if (HitEffect != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, GetActorTransform());
+	}
+	if (HitSound != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+	}
+	if (CameraShake)
+	{
+		UGameplayStatics::PlayWorldCameraShake(this, CameraShake, GetActorLocation(), 0.0f, 5000.0f);
+	}
 
 	Destroy();
 }
